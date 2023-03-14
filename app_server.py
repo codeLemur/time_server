@@ -2,6 +2,7 @@ import logging
 from flask import Flask, request
 
 import datahandler
+import globals
 
 app = Flask(__name__)
 dh = datahandler.DataHandler()
@@ -14,6 +15,12 @@ def index():
         # Do something with the data
         logging.info(f'Received POST request with data: {data}')
         dh.save_timestamp(data)
+        if data[globals.ROLE_START]:
+            dh.set_last_start_time(data)
+        elif data[globals.ROLE_GOAL]:
+            dh.set_last_goal_time(data)
+            dh.calculate_race_duration()  # TODO move to other location, wait for confirmation if signal counts
+
         return 'Received POST request with data: {}'.format(data)
     else:
         return 'Hello, world!'
