@@ -1,11 +1,11 @@
 import logging
 from flask import Flask, request
 
-import datahandler
+import data_handler
 import globals
 
 app = Flask(__name__)
-dh = datahandler.DataHandler()
+dh = data_handler.DataHandler()
 
 
 @app.route('/', methods=['GET', 'POST'])
