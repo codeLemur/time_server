@@ -12,23 +12,23 @@ sm = state_machine.StateMachine()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    result = -1
+    result = 'error'
     if request.method == 'POST':
         data = request.get_json()
         logging.info(f'Received POST request with data: {data}')
         if data[globals.COMMAND_TYPE_KEY] == globals.CMD_STATE_CHANGE:
             handle_state_change_command(data)
-            result = 0
+            result = 'success'
         elif data[globals.COMMAND_TYPE_KEY] == globals.CMD_REPORT_TIME:
             handle_report_time_command(data)
-            result = 0
+            result = 'success'
         else:
             logging.error(f'Received invalid command: {data[globals.COMMAND_TYPE_KEY]}')
 
-        return result  # 0 for success, -1 for error
+        return result
     elif request.method == 'GET':
         logging.info('Received GET request, return current State')  # TODO remove to speed this up
-        return sm.get_current_state().value
+        return sm.get_current_state().name
     else:
         return 'Hello, world!'
 
