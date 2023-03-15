@@ -39,20 +39,31 @@ def hello():
 
 
 def handle_state_change_command(data: dict):
-    if sm.update(data[globals.EVENT_KEY]):
+    event = globals.Events[data[globals.EVENT_KEY]]
+    # TODO check for roles?
+    if sm.update(event):
         # State changed do entry action for specific states
         if sm.get_current_state() == globals.States.STOPPED:
             dh.calculate_race_duration()
 
 
 def handle_report_time_command(data: dict):
+    data.pop(globals.COMMAND_TYPE_KEY)
     dh.save_timestamp(data)
     if globals.ROLE_KEY in data:
-        if data[globals.ROLE_START]:
-            dh.set_last_start_time(data)
-        elif data[globals.ROLE_GOAL]:
-            dh.set_last_goal_time(data)
-            dh.calculate_race_duration()
+        if data[globals.ROLE_KEY] == globals.ROLE_START:
+            if sm.get_current_state() == globals.States.READY:
+                dh.set_last_start_time(data)
+            else:
+                logging.error(f'Timestamp is not stored because in wrong state: {sm.get_current_state().name}')
+        elif data[globals.ROLE_KEY] == globals.ROLE_GOAL:
+            if sm.get_current_state() == globals.States.RUNNING:
+                dh.set_last_goal_time(data)
+            else:
+                logging.error(f'Timestamp is not stored because in wrong state: {sm.get_current_state().name}')
+                # TODO return error value
+        else:
+            logging.error(f'Invalid role: {data[globals.ROLE_KEY]}')
 
 
 if __name__ == '__main__':
