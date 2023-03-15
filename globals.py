@@ -6,7 +6,6 @@ COMMAND_TYPE_KEY = 'cmd'  # Required
 TIMESTAMP_KEY = 'time'
 START_NUMBER_KEY = 'start_number'
 EVENT_KEY = 'event'
-# TODO add field for command or racedata entry
 
 # Roles
 ROLE_START = 'start'

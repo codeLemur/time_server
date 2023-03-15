@@ -33,8 +33,16 @@ class DataHandler:
             writer.writerow(timestamp_data)
 
     def calculate_race_duration(self):
-        # TODO
-        pass
+        start_time = self._last_start_time.get(globals.TIMESTAMP_KEY, 0)
+        goal_time = self._last_goal_time.get(globals.TIMESTAMP_KEY, 0)
+        duration = goal_time - start_time  # TODO convert to minutes and seconds?
+        race_number = self._last_start_time.get(globals.START_NUMBER_KEY)
+        # Check that the duration is not negative
+        if duration < 0:
+            logging.error(f'Got negative duration : {duration} ms')
+        else:
+            logging.info(f'Race duration for race number [{race_number}] is {duration} ms')
+            # TODO store duration together with race number
 
 
 if __name__ == '__main__':
