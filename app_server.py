@@ -22,6 +22,8 @@ def index():
         elif data[globals.COMMAND_TYPE_KEY] == globals.CMD_REPORT_TIME:
             if handle_report_time_command(data):
                 result = 'success'
+        elif data[globals.COMMAND_TYPE_KEY] == globals.CMD_REQUEST_START_NUMBER:
+            result = str(dh.get_last_start_number())
         else:
             logging.error(f'Received invalid command: {data[globals.COMMAND_TYPE_KEY]}')
 

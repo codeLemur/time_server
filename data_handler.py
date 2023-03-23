@@ -31,6 +31,9 @@ class DataHandler:
     def set_last_start_time(self, timestamp_data: dict) -> None:
         self._last_start_time = timestamp_data
 
+    def get_last_start_number(self) -> int:
+        return self._last_start_time.get(globals.START_NUMBER_KEY, 0)
+
     def set_last_goal_time(self, timestamp_data: dict) -> None:
         self._last_goal_time = timestamp_data
 

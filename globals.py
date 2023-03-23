@@ -7,7 +7,7 @@ TIMESTAMP_KEY = 'time'
 START_NUMBER_KEY = 'start_number'
 EVENT_KEY = 'event'
 DURATION_KEY = 'duration_ms'
-LOG_TIME_KEY = 'goal_arrival_time'
+LOG_TIME_KEY = 'log_time'
 
 # Roles
 ROLE_START = 'start'
@@ -17,6 +17,7 @@ ROLE_SERVER = 'server'
 # Command Types
 CMD_STATE_CHANGE = 'state_change'
 CMD_REPORT_TIME = 'report_time'
+CMD_REQUEST_START_NUMBER = 'request_start_number'
 
 
 class States(Enum):
