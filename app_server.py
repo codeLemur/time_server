@@ -48,24 +48,28 @@ def handle_state_change_command(data: dict) -> bool:
         result = True
         # State changed do entry action for specific states
         if sm.get_current_state() == globals.States.STOPPED:
+            logging.info("Calculate race duration")
             dh.calculate_race_duration()
 
     return result
 
 
 def handle_report_time_command(data: dict) -> bool:
+    logging.info(f"handle report time: {data}")
     result = False
     data.pop(globals.COMMAND_TYPE_KEY)
     dh.save_timestamp(data)
     if globals.ROLE_KEY in data:
         if data[globals.ROLE_KEY] == globals.ROLE_START:
             if sm.get_current_state() == globals.States.READY:
+                logging.info("Set last start time")
                 dh.set_last_start_time(data)
                 result = True
             else:
                 logging.error(f'Timestamp is not stored because in wrong state: {sm.get_current_state().name}')
         elif data[globals.ROLE_KEY] == globals.ROLE_GOAL:
             if sm.get_current_state() == globals.States.RUNNING:
+                logging.info("Set last goal time")
                 dh.set_last_goal_time(data)
                 result = True
             else:
@@ -78,5 +82,5 @@ def handle_report_time_command(data: dict) -> bool:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logging.info('Start Server')
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=False, host='0.0.0.0', port=80)
 
